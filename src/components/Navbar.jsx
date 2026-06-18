@@ -7,7 +7,7 @@ function Navbar() {
 
         {/* Left — Logo */}
         <div className="flex items-center gap-3">
-          <span className="text-white font-bold text-2xl">✦</span>
+          <span className="text-white font-bold text-2xl">✧</span>
           <span className="text-white font-bold text-xl tracking-wide">ALOK KUMAR GUPTA</span>
         </div>
 

@@ -28,7 +28,7 @@ function Hero() {
 
       {/* Left — Text */}
       <div className="flex-1 animate-fadein">
-        <p className="text-base tracking-widest uppercase text-gray-500 mb-6">
+        <p className="text-xl tracking-widest uppercase text-gray-500 mb-1">
           Hey, I'm Alok
         </p>
         <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight text-white">

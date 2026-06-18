@@ -136,7 +136,7 @@ function Contact() {
             github.com/lokkcode
           </a>
           <span className="hidden md:block text-gray-700">·</span>
-          <a href="https://linkedin.com/in/alok-kumar-gupta" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300">
+          <a href="https://www.linkedin.com/in/alokgpt/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300">
             LinkedIn
           </a>
         </div>
