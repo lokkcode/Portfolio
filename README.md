@@ -1,16 +1,76 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# 🌐 Personal Portfolio — Alok Kumar Gupta
+ 
+A minimal, dark-themed personal portfolio built from scratch using React + Vite + Tailwind CSS. Deployed on Vercel.
+ 
+🔗 **Live:** [portfolio-mu-tan-94.vercel.app](https://portfolio-mu-tan-94.vercel.app)
+💼 **LinkedIn:** [linkedin.com/in/alokgpt](https://www.linkedin.com/in/alokgpt)
+🐙 **GitHub:** [github.com/lokkcode](https://github.com/lokkcode)
+ 
+---
+ 
+## ✨ Features
+ 
+- Smooth page entrance animation on load
+- Scroll-triggered animations using Intersection Observer API
+- Infinite auto-scrolling project carousel (pause on hover)
+- Fully functional contact form powered by EmailJS
+- Responsive layout across all screen sizes
+- Dark aesthetic with coral red accent
+---
+ 
+## 🛠️ Tech Stack
+ 
+| Layer | Tech |
+|-------|------|
+| Framework | React.js |
+| Build Tool | Vite |
+| Styling | Tailwind CSS v4 |
+| Animations | CSS Keyframes + Intersection Observer |
+| Contact Form | EmailJS |
+| Deployment | Vercel |
+ 
+---
+ 
+## 📁 Project Structure
+ 
+```
+src/
+├── components/
+│   ├── Navbar.jsx        # Fixed navbar with smooth hover links
+│   ├── Hero.jsx          # Full-screen hero with entrance animation
+│   ├── Skills.jsx        # Categorized skills with scroll animation
+│   ├── Projects.jsx      # Infinite auto-scrolling project carousel
+│   └── Contact.jsx       # Contact form + social links
+├── assets/
+│   └── alok.jpg          # Profile photo
+├── App.jsx
+├── index.css             # Global styles + custom animations
+└── main.jsx
+```
+ 
+---
+ 
+## 🚀 Run Locally
+ 
+```bash
+# Clone the repo
+git clone https://github.com/lokkcode/portfolio.git
+cd portfolio
+ 
+# Install dependencies
+npm install
+ 
+# Start dev server
+npm run dev
+```
+ 
+---
+ 
+## 📬 Contact
+ 
+- 📧 alok41n42@gmail.com
+- 💼 [LinkedIn](https://www.linkedin.com/in/alokgpt)
+- 🐙 [GitHub](https://github.com/lokkcode)
+---
+ 
+*Built with React + Vite · Deployed on Vercel*
