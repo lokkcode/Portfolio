@@ -1,76 +1,66 @@
+import { useEffect, useRef, useState } from 'react'
 import alokImg from '../assets/aloknew.png'
 
+const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&*+<>'
+const scramble = (text, keep = 0) =>
+  text.split('').map((c, i) => (c === ' ' || c === '&' || i < keep ? c : CHARS[Math.floor(Math.random() * CHARS.length)])).join('')
+
+// The one orchestrated moment: each line decodes from noise into real text.
+function Decode({ text, delay = 0 }) {
+  const reduce = typeof matchMedia !== 'undefined' && matchMedia('(prefers-reduced-motion: reduce)').matches
+  const [out, setOut] = useState(() => (reduce ? text : scramble(text)))
+
+  useEffect(() => {
+    if (reduce) return
+    let frame = 0
+    let id
+    const steps = 24
+    const start = setTimeout(() => {
+      id = setInterval(() => {
+        frame++
+        setOut(frame >= steps ? text : scramble(text, Math.floor((text.length * frame) / steps)))
+        if (frame >= steps) clearInterval(id)
+      }, 40)
+    }, delay)
+    return () => { clearTimeout(start); clearInterval(id) }
+  }, [text, delay, reduce])
+
+  return <span aria-hidden="true">{out}</span>
+}
+
 function Hero() {
+  const ref = useRef(null)
+  const move = (e) => {
+    const r = ref.current.getBoundingClientRect()
+    ref.current.style.setProperty('--x', `${e.clientX - r.left}px`)
+    ref.current.style.setProperty('--y', `${e.clientY - r.top}px`)
+  }
+
   return (
-    <section
-      id="hero"
-      className="relative w-full min-h-screen flex items-start overflow-hidden"
-      style={{ backgroundColor: '#0a0a0a' }}
-    >
-      {/* Subtle radial glow in background */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%)',
-        }}
-      />
+    <section id="hero" ref={ref} onMouseMove={move} className="relative flex min-h-screen items-center overflow-hidden px-6 pb-16 pt-28">
+      <div className="glow pointer-events-none absolute inset-0" />
+      <div className="relative mx-auto flex w-full max-w-6xl flex-col-reverse items-start justify-between gap-12 md:flex-row md:items-end">
+        <div>
+          <h1 aria-label="Full-Stack Developer & AI Builder" className="text-[clamp(3rem,9.5vw,8rem)] font-extrabold leading-[0.92] tracking-tight">
+            <span className="block"><Decode text="Full-Stack" /></span>
+            <span className="block"><Decode text="Developer" delay={200} /></span>
+            <span className="block"><Decode text="& AI Builder" delay={400} /></span>
+          </h1>
+          <p className="mt-8 max-w-md text-lg leading-relaxed text-dim">
+            I build AI-powered web apps, from the model call to the interface. Open to internships and entry-level roles.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <a href="#projects" className="rounded-full bg-signal px-7 py-3 font-medium text-ink transition-transform hover:-translate-y-1">See my projects</a>
+            <a href="#contact" className="rounded-full border border-bone/30 px-7 py-3 font-medium transition-colors hover:border-signal hover:text-signal">Send a message</a>
+          </div>
+        </div>
 
-      {/* Bottom fade */}
-      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none"
-        style={{ background: 'linear-gradient(to top, #0a0a0a, transparent)' }}
-      />
-
-      {/* Main content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-6 w-full flex flex-col gap-10 pb-24 pt-8">
-
-      {/* Top row — Text + Photo */}
-      <div className="flex flex-col md:flex-row justify-between md:items-start gap-10">
-
-      {/* Left — Text */}
-      <div className="flex-1 animate-fadein">
-        <p className="text-xl tracking-widest uppercase text-gray-500 mb-1">
-          Hey, I'm Alok
-        </p>
-        <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight text-white">
-          Full-Stack<br />
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-white italic font-light text-gray-400">Developer</span><br />
-        & AI Builder
-        </h1>
+        <div className="relative w-56 shrink-0 sm:w-64 md:w-80">
+          <div className="absolute inset-0 translate-x-3 translate-y-3 rounded-t-full border border-signal" />
+          <img src={alokImg} alt="Alok Kumar Gupta" className="relative aspect-[4/5] w-full rounded-t-full object-cover object-top" />
+        </div>
       </div>
-
-      {/* Right — Photo */}
-      <div className="animate-fadein-delay flex items-start justify-end">
-        <img
-          src={alokImg}
-          alt="Alok Kumar Gupta"
-          className="w-80 h-80 rounded-full object-cover object-top"
-        />
-      </div>
-
-      </div>
-
-  {/* Bottom — Tagline + Buttons centered */}
-  <div className="flex flex-col items-center text-center gap-6 mt-16 animate-fadein-delay">
-    <p className="text-gray-400 text-lg font-light leading-relaxed max-w-xl">
-      Building AI-powered web applications —
-      bridging intelligent systems with
-      seamless user experiences.
-    </p>
-    <div className="flex gap-4">
-      <a href="#projects"
-        className="px-6 py-3 rounded-full text-sm font-medium text-white border border-white/20 hover:border-white hover:bg-white hover:text-black transition-all duration-300">
-        View Projects
-      </a>
-      <a href="#contact"
-        className="px-6 py-3 rounded-full text-sm font-medium text-black bg-white hover:bg-transparent hover:text-white border border-white transition-all duration-300">
-        Let's Talk
-      </a>
-    </div>
-  </div>
-
-</div>
     </section>
-    
   )
 }
 

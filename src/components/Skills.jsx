@@ -1,90 +1,60 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-const skillCategories = [
-  {
-    title: 'Frontend',
-    skills: ['React.js', 'JavaScript', 'HTML', 'CSS', 'Tailwind CSS', 'Vite'],
-    delay: '0s'
-  },
-  {
-    title: 'Backend',
-    skills: ['Node.js', 'Express.js', 'MongoDB', 'REST APIs', 'Passport.js'],
-    delay: '0.15s'
-  },
-  {
-    title: 'AI & APIs',
-    skills: ['Groq API', 'Tavily API', 'Prompt Engineering'],
-    delay: '0.3s'
-  },
-  {
-    title: 'Tools & Others',
-    skills: ['Git', 'GitHub', 'Vercel', 'Render', 'Cloudinary', 'Mapbox', 'Canva', 'Python', 'Java'],
-    delay: '0.45s'
-  },
+// Same skills as before, shown as a periodic table: one row per category.
+const rows = [
+  { title: 'Frontend', color: 'var(--c-front)', skills: [['Re', 'React.js'], ['Js', 'JavaScript'], ['Ht', 'HTML'], ['Cs', 'CSS'], ['Tw', 'Tailwind CSS'], ['Vi', 'Vite']] },
+  { title: 'Backend', color: 'var(--c-back)', skills: [['No', 'Node.js'], ['Ex', 'Express.js'], ['Mo', 'MongoDB'], ['Ra', 'REST APIs'], ['Pp', 'Passport.js']] },
+  { title: 'AI & APIs', color: 'var(--c-ai)', skills: [['Gq', 'Groq API'], ['Tv', 'Tavily API'], ['Pe', 'Prompt Engineering']] },
+  { title: 'Tools & Others', color: 'var(--c-tools)', skills: [['Gi', 'Git'], ['Gh', 'GitHub'], ['Ve', 'Vercel'], ['Rn', 'Render'], ['Cl', 'Cloudinary'], ['Mb', 'Mapbox'], ['Cv', 'Canva'], ['Py', 'Python'], ['Jv', 'Java']] },
 ]
 
 function Skills() {
-  const sectionRef = useRef(null)
+  const ref = useRef(null)
+  const [seen, setSeen] = useState(false)
+  const [focus, setFocus] = useState(null)
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Add visible class to all category cards
-            const cards = sectionRef.current.querySelectorAll('.skill-card')
-            cards.forEach((card) => {
-              card.classList.add('skill-card-visible')
-            })
-            // Stop observing once triggered
-            observer.disconnect()
-          }
-        })
-      },
-      { threshold: 0.2 } // fires when 20% of section is visible
-    )
-
-    if (sectionRef.current) observer.observe(sectionRef.current)
-
-    return () => observer.disconnect()
+    const io = new IntersectionObserver(([e]) => e.isIntersecting && (setSeen(true), io.disconnect()), { threshold: 0.2 })
+    io.observe(ref.current)
+    return () => io.disconnect()
   }, [])
 
+  let n = 0
   return (
-    <section
-      id="skills"
-      ref={sectionRef}
-      className="w-full py-8"
-      style={{ backgroundColor: '#0a0a0a' }}
-    >
-      <div className="max-w-5xl mx-auto px-6">
+    <section id="skills" ref={ref} className="mx-auto max-w-6xl px-6 py-28">
+      <h2 className="font-serif text-5xl md:text-7xl">My stack, element by element</h2>
+      <p className="mt-4 max-w-md text-dim">Hover or tap a category to light it up.</p>
 
-        <p className="text-xs tracking-widest uppercase text-gray-500 mb-3">What I work with</p>
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-16">Skills</h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {skillCategories.map((category) => (
-            <div
-              key={category.title}
-              className="skill-card"
-              style={{ animationDelay: category.delay }}
-            >
-              <p className="text-xs tracking-widest uppercase text-gray-500 mb-4 border-b border-white/10 pb-3">
-                {category.title}
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {category.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-4 py-2 text-sm text-gray-300 border border-white/10 rounded-full hover:border-white/40 hover:text-white transition-all duration-300"
+      <div className="mt-14 space-y-10">
+        {rows.map((r, ri) => (
+          <div
+            key={r.title}
+            onMouseEnter={() => setFocus(ri)}
+            onMouseLeave={() => setFocus(null)}
+            onClick={() => setFocus(focus === ri ? null : ri)}
+            className="grid gap-4 transition-opacity duration-300 md:grid-cols-[11rem_1fr] md:items-center"
+            style={{ opacity: focus === null || focus === ri ? 1 : 0.25 }}
+          >
+            <h3 className="font-serif text-3xl italic" style={{ color: r.color }}>{r.title}</h3>
+            <ul className="flex flex-wrap gap-3">
+              {r.skills.map(([sym, name]) => {
+                const i = n++
+                return (
+                  <li
+                    key={name}
+                    style={{ opacity: seen ? 1 : 0, transform: seen ? 'perspective(600px) rotateY(0)' : 'perspective(600px) rotateY(90deg) scale(.8)', transition: `opacity .6s ${i * 50}ms, transform .7s cubic-bezier(.2,.8,.2,1) ${i * 50}ms` }}
                   >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
+                    <div className="flex size-28 flex-col justify-between rounded-lg border bg-panel p-2.5 transition-transform duration-300 hover:-translate-y-1.5 sm:size-32" style={{ borderColor: `color-mix(in srgb, ${r.color} 40%, transparent)` }}>
+                      <span className="text-xs text-dim">{i + 1}</span>
+                      <span className="font-serif text-4xl leading-none" style={{ color: r.color }}>{sym}</span>
+                      <span className="text-[13px] leading-tight">{name}</span>
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        ))}
       </div>
     </section>
   )
