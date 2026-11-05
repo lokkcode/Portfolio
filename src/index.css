@@ -47,3 +47,27 @@ body { background: var(--color-ink); color: var(--color-bone); font-family: var(
   background: linear-gradient(transparent, #ff7a59 35%, #ffc58a 50%, #ff7a59 65%, transparent);
 }
 ::view-transition-group(horizon), ::view-transition-old(horizon), ::view-transition-new(horizon) { animation: none; }
+
+/* Footer card stays dark in both day and night mode */
+.dark-card {
+  --color-ink: #14080b; --color-panel: #1d0e12; --color-bone: #f3ece6;
+  --color-dim: #a8918e; --color-signal: #ff4d4f; --color-line: #3a1d23;
+}
+
+/* Form card with a neon light that travels around its border */
+@property --angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes neon-spin { to { --angle: 360deg; } }
+.neon-border {
+  position: relative; isolation: isolate; border-radius: 1.75rem; padding: 1.5px;
+  background: conic-gradient(from var(--angle), transparent 0 60%, #7a1632 72%, #ff4d4f 88%, #ffd0d3 95%, transparent 100%), var(--color-line);
+  animation: neon-spin 6s linear infinite;
+}
+.neon-border::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  background: inherit; filter: blur(12px); opacity: 0.55;
+}
+@media (prefers-reduced-motion: reduce) { .neon-border, .neon-border::before { background: var(--color-line); } }
+
+/* Hero flip card: the new title folds down like a desk calendar page */
+@keyframes flipin { from { transform: rotateX(-90deg); opacity: 0; } 60% { opacity: 1; } to { transform: rotateX(0); opacity: 1; } }
+.flip-in { transform-origin: top center; animation: flipin 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }

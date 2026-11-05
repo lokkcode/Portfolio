@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import ThemeToggle from './Themetoggle'
+import ThemeToggle from './ThemeToggle'
 
 const links = [
   ['Home', '#hero'],
@@ -47,13 +47,13 @@ function Navbar() {
     <>
       <div ref={bar} className="fixed left-0 top-0 z-[60] h-0.5 w-full origin-left bg-signal" style={{ transform: 'scaleX(0)' }} />
       <header className="fixed top-0 z-50 flex w-full items-center justify-between border-b border-line bg-ink/70 px-6 py-4 backdrop-blur">
-        <a href="#hero" className="text-lg font-bold tracking-tight text-bone" onClick={() => setOpen(false)}>
+        <a href="#hero" className="text-base font-bold tracking-tight sm:text-lg text-bone" onClick={() => setOpen(false)}>
           Alok Kumar Gupta
         </a>
         <div className="flex items-center gap-4 text-bone sm:gap-6">
           <span className="hidden text-sm sm:block" aria-label="Local time">Greater Noida, {time}</span>
           <ThemeToggle />
-          <button onClick={() => setOpen(!open)} aria-expanded={open} className="rounded-full border border-bone/40 px-15 py-2 text-sm font-medium">
+          <button onClick={() => setOpen(!open)} aria-expanded={open} className="rounded-full border border-bone/40 px-5 py-2 text-sm font-medium sm:px-15">
             {open ? 'Close' : 'Menu'}
           </button>
         </div>

@@ -15,21 +15,25 @@ const projects = [
   { slug: 'simon-says', title: 'Simon Says Game', kind: 'Browser game', description: 'A memory game inspired by the classic electronic Simon Says. Memorize the color sequence and repeat it.', tags: ['HTML5', 'CSS3', 'JavaScript (Vanilla)'], live: null, github: 'https://github.com/lokkcode/Simon-Says-Game' },
 ]
 
-function Frame({ src, title }) {
+// A desktop monitor with a slight tilt that straightens on hover.
+function Monitor({ src, title }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-line bg-ink shadow-2xl">
-      <div className="flex gap-1.5 border-b border-line px-4 py-3">
-        {[0, 1, 2].map((i) => <span key={i} className="size-2.5 rounded-full bg-line" />)}
+    <div className="mx-auto w-full max-w-2xl [perspective:1400px]">
+      <div className="transition-transform duration-500 md:[transform:rotateY(7deg)] md:group-hover:[transform:rotateY(0deg)]">
+        <div className="rounded-2xl bg-[#0b0b0d] p-2 shadow-2xl ring-1 ring-white/10 md:p-3">
+          <div className="aspect-[16/10] overflow-hidden rounded-lg bg-ink">
+            {src ? (
+              isVideo(src)
+                ? <video src={src} autoPlay muted loop playsInline className="size-full object-cover object-top" />
+                : <img src={src} alt={`${title} screenshot`} loading="lazy" className="size-full object-cover object-top" />
+            ) : (
+              <div className="glow-card flex size-full items-center justify-center px-4 text-center font-serif text-3xl text-bone/60 md:text-4xl" style={{ '--x': '50%', '--y': '50%' }}>{title}</div>
+            )}
+          </div>
+        </div>
       </div>
-      <div className="aspect-[16/10]">
-        {src ? (
-          isVideo(src)
-            ? <video src={src} autoPlay muted loop playsInline className="size-full object-cover object-top" />
-            : <img src={src} alt={`${title} screenshot`} loading="lazy" className="size-full object-cover object-top" />
-        ) : (
-          <div className="glow-card flex size-full items-center justify-center font-serif text-4xl text-bone/60" style={{ '--x': '50%', '--y': '50%' }}>{title}</div>
-        )}
-      </div>
+      <div className="mx-auto h-8 w-20 bg-gradient-to-b from-[#c9c4c1] to-[#8d8987] [clip-path:polygon(15%_0,85%_0,100%_100%,0_100%)] md:h-12 md:w-28" />
+      <div className="mx-auto h-2 w-40 rounded-full bg-gradient-to-b from-[#d4cfcc] to-[#8d8987] shadow-[0_16px_28px_rgba(0,0,0,.35)] md:w-56" />
     </div>
   )
 }
@@ -45,6 +49,8 @@ function Projects() {
     const update = () => {
       raf = 0
       cards.forEach((c, i) => {
+        // Stick below the header; a card taller than the screen sticks once its bottom shows.
+        c.style.top = `${Math.min(88 + i * 24, innerHeight - c.offsetHeight - 16)}px`
         const next = cards[i + 1]
         if (!next) return
         const r = c.getBoundingClientRect()
@@ -61,27 +67,27 @@ function Projects() {
   }, [])
 
   return (
-    <section id="projects" className="mx-auto max-w-6xl px-6 py-28">
-      <h2 className="font-serif text-5xl md:text-7xl">Things I have built</h2>
+    <section id="projects" className="mx-auto max-w-7xl px-6 py-20 md:py-28">
+      <h2 className="font-serif text-4xl sm:text-5xl md:text-7xl">Things I have built</h2>
       <p className="mt-4 max-w-md text-dim">Scroll to stack through them.</p>
 
-      <div ref={list} className="mt-14 space-y-10 md:space-y-[14vh]">
+      <div ref={list} className="mt-10 space-y-[10vh] md:mt-14 lg:space-y-[14vh]">
         {projects.map((p, i) => (
           <article
             key={p.slug}
-            style={{ '--t': `${88 + i * 24}px` }}
-            className="relative origin-top overflow-hidden rounded-3xl border border-line bg-panel p-6 shadow-[0_-20px_60px_rgba(60,10,20,.3)] md:sticky md:top-[var(--t)] md:p-10"
+            className="origin-top overflow-hidden rounded-3xl border border-line bg-panel p-5 shadow-[0_-20px_60px_rgba(60,10,20,.3)] sm:p-8 sticky lg:min-h-[32rem] lg:p-12"
           >
-            <div className="grid items-center gap-8 md:h-[26rem] md:grid-cols-2">
-              <div className={i % 2 ? 'md:order-2' : ''}><Frame src={findMedia(p.slug)} title={p.title} /></div>
+            <div className={`grid items-center gap-8 lg:gap-12 ${i % 2 ? 'lg:grid-cols-[1fr_1.3fr]' : 'lg:grid-cols-[1.3fr_1fr]'}`}>
+              <div className={i % 2 ? 'lg:order-2' : ''}><Monitor src={findMedia(p.slug)} title={p.title} /></div>
               <div>
                 <p className="text-sm text-dim">{p.kind}{p.featured ? ', featured project' : ''}</p>
-                <h3 className="mt-2 font-serif text-5xl">{p.title}</h3>
+                <h3 className="mt-2 font-serif text-4xl md:text-5xl lg:text-6xl">{p.title}</h3>
                 <p className="mt-4 leading-relaxed text-bone/75">{p.description}</p>
                 <ul className="mt-6 flex flex-wrap gap-2">
                   {p.tags.map((t) => <li key={t} className="rounded-full border border-line px-3 py-1 text-xs text-dim">{t}</li>)}
                 </ul>
-                <div className="mt-8 flex gap-3">
+                {findMedia(p.slug) && isVideo(findMedia(p.slug)) && <p className="mt-6 flex items-center gap-2 text-sm text-dim"><span className="size-2 rounded-full bg-signal" />Screen recording of the build</p>}
+                <div className="mt-8 flex flex-wrap gap-3">
                   {p.live && <a href={p.live} target="_blank" rel="noopener noreferrer" className="rounded-full bg-signal px-5 py-2 text-sm font-medium text-ink transition-transform hover:-translate-y-1">Open live site</a>}
                   <a href={p.github} target="_blank" rel="noopener noreferrer" className="rounded-full border border-bone/30 px-5 py-2 text-sm font-medium transition-colors hover:border-signal hover:text-signal">View code</a>
                 </div>

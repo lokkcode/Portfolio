@@ -21,8 +21,8 @@ function Skills() {
 
   let n = 0
   return (
-    <section id="skills" ref={ref} className="mx-auto max-w-6xl px-6 py-28">
-      <h2 className="font-serif text-5xl md:text-7xl">My stack, element by element</h2>
+    <section id="skills" ref={ref} className="mx-auto max-w-6xl px-6 py-20 md:py-28">
+      <h2 className="font-serif text-4xl sm:text-5xl md:text-7xl">My stack, element by element</h2>
       <p className="mt-4 max-w-md text-dim">Hover or tap a category to light it up.</p>
 
       <div className="mt-14 space-y-10">
@@ -36,7 +36,7 @@ function Skills() {
             style={{ opacity: focus === null || focus === ri ? 1 : 0.25 }}
           >
             <h3 className="font-serif text-3xl italic" style={{ color: r.color }}>{r.title}</h3>
-            <ul className="flex flex-wrap gap-3">
+            <ul className="flex flex-wrap gap-2.5 sm:gap-3">
               {r.skills.map(([sym, name]) => {
                 const i = n++
                 return (
@@ -44,10 +44,10 @@ function Skills() {
                     key={name}
                     style={{ opacity: seen ? 1 : 0, transform: seen ? 'perspective(600px) rotateY(0)' : 'perspective(600px) rotateY(90deg) scale(.8)', transition: `opacity .6s ${i * 50}ms, transform .7s cubic-bezier(.2,.8,.2,1) ${i * 50}ms` }}
                   >
-                    <div className="flex size-28 flex-col justify-between rounded-lg border bg-panel p-2.5 transition-transform duration-300 hover:-translate-y-1.5 sm:size-32" style={{ borderColor: `color-mix(in srgb, ${r.color} 40%, transparent)` }}>
+                    <div className="flex size-[5.5rem] flex-col justify-between rounded-lg border bg-panel p-2 transition-transform duration-300 hover:-translate-y-1.5 sm:size-28 sm:p-2.5 lg:size-32" style={{ borderColor: `color-mix(in srgb, ${r.color} 40%, transparent)` }}>
                       <span className="text-xs text-dim">{i + 1}</span>
-                      <span className="font-serif text-4xl leading-none" style={{ color: r.color }}>{sym}</span>
-                      <span className="text-[13px] leading-tight">{name}</span>
+                      <span className="font-serif text-3xl leading-none sm:text-4xl" style={{ color: r.color }}>{sym}</span>
+                      <span className="text-xs leading-tight sm:text-[13px]">{name}</span>
                     </div>
                   </li>
                 )
