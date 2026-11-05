@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import ThemeToggle from './ThemeToggle'
+import ThemeToggle from './Themetoggle'
 
 const links = [
   ['Home', '#hero'],

@@ -1,5 +1,5 @@
 import BackToTop from './components/Backtotop'
-import Navbar from './components/Navbar'
+import Navbar from './components/Navbar'  
 import Hero from './components/Hero'
 import Skills from './components/Skills'
 import Journey from './components/Journey'
